@@ -3,11 +3,11 @@ import java.util.Scanner;
 public class Main {
     static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
+        Graph selectedGraph = null;
         while (true) {
             try {
                 System.out.println("\n-- Menu --" +
-                        "\n1. Read a file as a graph and run a BFS" +
+                        "\n1. Read a file as a graph and run Dijkstra's Algorithm" +
                         "\n2. Exit application");
                 String in = sc.next();
                 if (Integer.parseInt(in) == 1){
@@ -15,13 +15,45 @@ public class Main {
                         try {
                             System.out.println("\n-- Read Graph --" +
                                     "\nEnter the filename of your CSV file located in src/TxtFiles, or enter 0 to cancel." +
-                                    "\nExample: AGraph.csv\n");
+                                    "\nExample: graph1.csv\n");
                             System.out.print("Enter file name: ");
                             in = sc.next();
                             if (in.equals("0")) {
                                 break;
                             }
-                            else {Reader.Read("src/TxtFiles/" + in);}
+                            else {
+                                selectedGraph = Reader.Read("src/TxtFiles/" + in);
+                                String graphName = in;
+                                while (true) {
+                                    try {
+                                        System.out.println("\n-- Dijkstra's Algorithm --" +
+                                                "\nList of vertices inside of " + graphName);
+                                        for (int i = 0; i < selectedGraph.vertices.size(); i++) {
+                                            int num = i+1;
+                                            System.out.print("" + num + ". "
+                                                    + selectedGraph.vertices.get(i).getName() + "\n");
+                                        }
+                                        System.out.print("\nEnter the node name to run DA. " +
+                                                "Otherwise, enter 0 to cancel: ");
+                                        in = sc.next();
+
+                                        if (in.equals("0")) {
+                                            break;
+                                        }
+
+                                        else {
+                                            Vertex selectedNode = selectedGraph.getVertexByName(in);
+                                            System.out.println("Selected node: " + selectedNode.getName());
+                                            selectedGraph.dAlgo(selectedNode);
+
+                                        }
+
+                                    }
+                                    catch (NullPointerException nullPointerException) {
+                                        System.out.println("The node could not be found. Please try again.");
+                                    }
+                                }
+                            }
                         } catch (NumberFormatException e) {
                             System.out.println("Invalid input");
                         }
@@ -38,28 +70,5 @@ public class Main {
         }
     }
 
-    public static void test() {
-        Graph g = new AdjacencyList();
 
-        g.addEdge("A", "B", 2);
-        g.addEdge("A", "C", 3);
-
-        Graph h = new AdjacencyMatrix();
-
-        h.addEdge("A", "B", 2);
-        h.addEdge("A", "C", 3);
-        h.addEdge("A","D", 5.5);
-        h.addEdge("B", "E", 7);
-        h.addEdge("C", "E", 3);
-        h.addEdge("D", "F", 5);
-        h.addEdge("E","G",5);
-        h.addEdge("E", "H", 5.7);
-        h.addEdge("F","H",4.4);
-        h.addEdge("F","I",5);
-        h.addEdge("G","J",4.3);
-        h.addEdge("H","I",2.8);
-        h.addEdge("H","J",4);
-
-        h.printGraph();
-    }
 }

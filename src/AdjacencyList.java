@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class AdjacencyList extends Graph {
 
     public AdjacencyList() {
@@ -14,9 +15,11 @@ public class AdjacencyList extends Graph {
         if (isAVertex(s)) {
             nVertex = getVertexByName(s);
         }
-        else {nVertex = new Vertex(s);}
+        else {
+            nVertex = new Vertex(s);
+            vertices.add(nVertex);
+        }
 
-        vertices.add(nVertex);
         return nVertex;
     }
 
